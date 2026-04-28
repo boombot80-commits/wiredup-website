@@ -1,0 +1,83 @@
+---
+import EmailCapture from '../components/EmailCapture.svelte';
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WiredUp Digital — Coming Soon</title>
+    <meta name="description" content="Digital automation for Australian small businesses. We build it, you wield it." />
+    <link rel="icon" type="image/jpeg" href="/wiredup-logo.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body class="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden">
+
+    <!-- Background glow orbs -->
+    <div class="glow-orb w-96 h-96 bg-blue-600 top-[-10%] right-[-10%] opacity-20"></div>
+    <div class="glow-orb w-80 h-80 bg-emerald-500 bottom-[-5%] left-[-5%] opacity-15" style="animation-delay: 3s;"></div>
+
+    <!-- Subtle grid overlay -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px); background-size: 48px 48px;"></div>
+
+    <!-- Main content -->
+    <main class="relative z-10 flex flex-col items-center text-center max-w-xl w-full gap-8">
+
+      <!-- Logo -->
+      <div class="animate-float">
+        <div class="w-24 h-24 rounded-2xl bg-white p-3 shadow-2xl shadow-emerald-500/10">
+          <img src="/wiredup-logo.jpg" alt="WiredUp Digital" class="w-full h-full object-contain" />
+        </div>
+      </div>
+
+      <!-- Brand name -->
+      <div class="flex flex-col gap-2">
+        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">
+          <span class="gradient-text">WiredUp</span>
+          <span class="text-white"> Digital</span>
+        </h1>
+        <p class="text-slate-400 text-lg font-medium">
+          Digital automation. We build it, you wield it.&nbsp;⚡
+        </p>
+      </div>
+
+      <!-- Coming soon message -->
+      <div class="flex flex-col gap-3">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-500/30 bg-emerald-500/5 text-emerald-400 text-sm font-medium mx-auto">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Something is being wired up
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed max-w-sm mx-auto">
+          n8n workflows, automation builds, and digital templates for Australian small businesses — launching soon.
+        </p>
+      </div>
+
+      <!-- Email capture -->
+      <div class="w-full">
+        <p class="text-slate-400 text-sm mb-4">Be first to know when we launch.</p>
+        <EmailCapture client:load />
+      </div>
+
+      <!-- Social links -->
+      <div class="flex items-center gap-6 text-slate-500 text-sm">
+        <a href="https://x.com/wiredupdigital" target="_blank" rel="noopener" class="hover:text-white transition-colors flex items-center gap-1.5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          @wiredupdigital
+        </a>
+        <span class="text-slate-700">·</span>
+        <span>Sunshine Coast, QLD</span>
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="absolute bottom-6 text-slate-700 text-xs">
+      © 2026 WiredUp Digital · ABN 32 829 809 923
+    </footer>
+
+  </body>
+</html>
