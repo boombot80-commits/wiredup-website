@@ -10,10 +10,12 @@ export async function onRequestPost(context) {
 
     const normalised = email.toLowerCase().trim();
 
-    // Store in D1
-    await env.DB.prepare(
-      'INSERT OR IGNORE INTO subscribers (email, created_at) VALUES (?, ?)'
-    ).bind(normalised, new Date().toISOString()).run();
+    // Store in D1 (if bound)
+    if (env.DB) {
+      await env.DB.prepare(
+        'INSERT OR IGNORE INTO subscribers (email, created_at) VALUES (?, ?)'
+      ).bind(normalised, new Date().toISOString()).run();
+    }
 
     // Send welcome email via Resend
     if (env.RESEND_API_KEY) {

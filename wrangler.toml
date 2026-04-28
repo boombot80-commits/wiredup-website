@@ -2,7 +2,8 @@ name = "wiredup-website"
 compatibility_date = "2024-09-23"
 pages_build_output_dir = "./dist"
 
-[[d1_databases]]
-binding = "DB"
-database_name = "wiredup-subscribers"
-database_id = "PLACEHOLDER"
+# D1 binding added once database is created
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "wiredup-subscribers"
+# database_id = "REPLACE_WITH_DB_ID"
