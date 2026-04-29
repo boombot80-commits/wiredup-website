@@ -1,10 +1,25 @@
+import { rateLimit } from './rate-limit.js';
+
 export async function onRequestPost(context) {
   const { request, env } = context;
+
+  // Rate limit: 5 per hour per IP
+  const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'unknown';
+  const { allowed, remaining } = rateLimit(ip);
+  if (!allowed) {
+    return json({ error: 'Too many requests. Please try again later.' }, 429, { 'Retry-After': '3600' });
+  }
 
   try {
     const { email } = await request.json();
 
     if (!email || !email.includes('@') || !email.includes('.')) {
+      return json({ error: 'Invalid email address.' }, 400);
+    }
+
+    // Validate email format more strictly
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!emailRegex.test(email)) {
       return json({ error: 'Invalid email address.' }, 400);
     }
 
@@ -17,14 +32,17 @@ export async function onRequestPost(context) {
       ).bind(normalised, new Date().toISOString()).run();
     }
 
-    // Send welcome email via Resend
+    // Send emails via Resend
     if (env.RESEND_API_KEY) {
+      const headers = {
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      };
+
+      // Welcome email to subscriber
       await fetch('https://api.resend.com/emails', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${env.RESEND_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({
           from: 'WiredUp Digital <hello@wiredupdigital.com>',
           to: normalised,
@@ -44,21 +62,30 @@ export async function onRequestPost(context) {
           `,
         }),
       });
+
+      // Admin notification
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          from: 'WiredUp Digital <hello@wiredupdigital.com>',
+          to: 'wiredupnotify@gmail.com',
+          subject: `⚡ New subscriber: ${normalised}`,
+          html: `<p style="font-family:system-ui,sans-serif;font-size:15px;"><strong>${normalised}</strong> just signed up on wiredupdigital.com.</p>`,
+        }),
+      });
     }
 
-    return json({ success: true });
+    return json({ success: true }, 200, { 'X-RateLimit-Remaining': String(remaining) });
   } catch (err) {
     console.error('Subscribe error:', err);
     return json({ error: 'Server error. Please try again.' }, 500);
   }
 }
 
-function json(data, status = 200) {
+function json(data, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
+    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', ...extraHeaders },
   });
 }
