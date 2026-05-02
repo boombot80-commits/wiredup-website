@@ -1,5 +1,4 @@
 ---
-import EmailCapture from '../components/EmailCapture.svelte';
 import '../styles/global.css';
 ---
 
@@ -8,14 +7,14 @@ import '../styles/global.css';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WiredUp Digital — Coming Soon</title>
-    <meta name="description" content="Digital automation for Australian small businesses. We build it, you wield it." />
+    <title>WiredUp Digital — We Build It, You Wield It</title>
+    <meta name="description" content="Digital automation for Australian small businesses. Fixr: fuel price intelligence. Automation: n8n workflows and templates." />
     <link rel="icon" type="image/jpeg" href="/wiredup-logo.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   </head>
-  <body class="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden">
+  <body class="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-x-hidden">
 
     <!-- Background glow orbs -->
     <div class="glow-orb w-96 h-96 bg-blue-600 top-[-10%] right-[-10%] opacity-20"></div>
@@ -25,17 +24,13 @@ import '../styles/global.css';
     <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px); background-size: 48px 48px;"></div>
 
     <!-- Main content -->
-    <main class="relative z-10 flex flex-col items-center text-center max-w-xl w-full gap-8">
+    <main class="relative z-10 flex flex-col items-center text-center max-w-2xl w-full gap-10 py-12">
 
-      <!-- Logo -->
-      <div class="animate-float">
-        <div class="w-24 h-24 rounded-2xl bg-white p-3 shadow-2xl shadow-emerald-500/10">
+      <!-- Logo + Tagline -->
+      <div class="flex flex-col items-center gap-3">
+        <div class="w-20 h-20 rounded-2xl bg-white p-2.5 shadow-2xl shadow-emerald-500/10">
           <img src="/wiredup-logo.jpg" alt="WiredUp Digital" class="w-full h-full object-contain" />
         </div>
-      </div>
-
-      <!-- Brand name -->
-      <div class="flex flex-col gap-2">
         <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">
           <span class="gradient-text">WiredUp</span>
           <span class="text-white"> Digital</span>
@@ -45,39 +40,121 @@ import '../styles/global.css';
         </p>
       </div>
 
-      <!-- Coming soon message -->
-      <div class="flex flex-col gap-3">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-500/30 bg-emerald-500/5 text-emerald-400 text-sm font-medium mx-auto">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          Something is being wired up
+      <!-- Products -->
+      <div class="w-full flex flex-col sm:flex-row gap-4">
+
+        <!-- Fixr Card -->
+        <a href="https://getfixr.app" class="group flex-1 rounded-2xl border border-[#1a1a1a] bg-[#111]/80 backdrop-blur p-6 text-left hover:border-[#00FF88]/40 transition-all">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="text-3xl">⛽</span>
+            <div>
+              <h2 class="text-white font-bold text-lg">Fixr</h2>
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-medium">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                Live — Closed Beta
+              </div>
+            </div>
+          </div>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            Fuel price intelligence for Australian drivers. Track cycles, find the cheapest station, know when to fill up.
+          </p>
+          <span class="text-emerald-400 text-sm font-medium group-hover:underline">Try the beta →</span>
+        </a>
+
+        <!-- Automation Card -->
+        <div class="flex-1 rounded-2xl border border-[#1a1a1a] bg-[#111]/80 backdrop-blur p-6 text-left">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="text-3xl">🤖</span>
+            <div>
+              <h2 class="text-white font-bold text-lg">Automation</h2>
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-medium">
+                Coming Soon
+              </div>
+            </div>
+          </div>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            n8n workflows, automation builds, and digital templates for Australian small businesses.
+          </p>
+          <span class="text-slate-600 text-sm">Available later in 2026</span>
         </div>
-        <p class="text-slate-500 text-sm leading-relaxed max-w-sm mx-auto">
-          n8n workflows, automation builds, and digital templates for Australian small businesses — launching soon.
-        </p>
+
       </div>
 
       <!-- Email capture -->
-      <div class="w-full">
-        <p class="text-slate-400 text-sm mb-4">Be first to know when we launch.</p>
-        <EmailCapture client:load />
-      </div>
-
-      <!-- Social links -->
-      <div class="flex items-center gap-6 text-slate-500 text-sm">
-        <a href="https://x.com/wiredupdigital" target="_blank" rel="noopener" class="hover:text-white transition-colors flex items-center gap-1.5">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          @wiredupdigital
-        </a>
-        <span class="text-slate-700">·</span>
-        <span>Sunshine Coast, QLD</span>
+      <div class="w-full max-w-md">
+        <p class="text-slate-400 text-sm mb-3">Get notified when automation products launch.</p>
+        <form id="email-form" class="flex flex-col sm:flex-row gap-3">
+          <input
+            type="email"
+            id="email-input"
+            placeholder="your@email.com"
+            required
+            class="flex-1 px-4 py-3 rounded-xl bg-[#111] border border-[#2a2a2a] text-white placeholder-slate-600 text-sm focus:outline-none focus:border-emerald-500 transition-colors"
+          />
+          <button
+            type="submit"
+            id="submit-btn"
+            class="px-6 py-3 rounded-xl font-semibold text-sm text-black transition-opacity hover:opacity-90"
+            style="background:#00FF88;"
+          >
+            Notify me
+          </button>
+        </form>
+        <div id="success-msg" class="hidden mt-3 text-emerald-400 text-sm font-medium">
+          You're on the list. We'll be in touch when we launch.
+        </div>
+        <div id="error-msg" class="hidden mt-3 text-red-400 text-sm"></div>
       </div>
 
     </main>
 
     <!-- Footer -->
-    <footer class="absolute bottom-6 text-slate-700 text-xs">
-      © 2026 WiredUp Digital · ABN 32 829 809 923
+    <footer class="absolute bottom-6 text-slate-700 text-xs text-center">
+      © 2026 WiredUp Digital · ABN 32 829 809 923 · Sunshine Coast, QLD<br/>
+      <a href="https://app.getfixr.app/privacy-policy.html" class="hover:text-slate-400 transition-colors">Privacy Policy</a> · <a href="https://app.getfixr.app/terms-of-service.html" class="hover:text-slate-400 transition-colors">Terms of Service</a> · <a href="https://app.getfixr.app/refund-policy.html" class="hover:text-slate-400 transition-colors">Refund Policy</a>
     </footer>
 
   </body>
+
+  <script>
+    const form = document.getElementById('email-form');
+    const emailInput = document.getElementById('email-input');
+    const submitBtn = document.getElementById('submit-btn');
+    const successMsg = document.getElementById('success-msg');
+    const errorMsg = document.getElementById('error-msg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      if (!email) return;
+
+      submitBtn.textContent = 'Sending…';
+      submitBtn.disabled = true;
+      successMsg.classList.add('hidden');
+      errorMsg.classList.add('hidden');
+
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+        if (res.ok) {
+          successMsg.classList.remove('hidden');
+          emailInput.value = '';
+        } else {
+          const data = await res.json();
+          errorMsg.textContent = data.error || 'Something went wrong.';
+          errorMsg.classList.remove('hidden');
+        }
+      } catch {
+        errorMsg.textContent = 'Could not connect. Try again.';
+        errorMsg.classList.remove('hidden');
+      } finally {
+        submitBtn.textContent = 'Notify me';
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
 </html>

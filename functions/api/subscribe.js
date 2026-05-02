@@ -32,48 +32,44 @@ export async function onRequestPost(context) {
       ).bind(normalised, new Date().toISOString()).run();
     }
 
-    // Send emails via Resend
+    // Send emails via Resend (welcome to subscriber + notification to admin)
     if (env.RESEND_API_KEY) {
-      const headers = {
-        Authorization: `Bearer ${env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      };
-
-      // Welcome email to subscriber
-      await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-          from: 'WiredUp Digital <hello@wiredupdigital.com>',
-          to: normalised,
-          subject: "You're on the list — WiredUp Digital ⚡",
-          html: `
-            <div style="font-family:system-ui,sans-serif;background:#080c14;color:#fff;padding:40px;max-width:520px;margin:0 auto;border-radius:16px;">
-              <img src="https://wiredupdigital.com/wiredup-logo.jpg" alt="WiredUp Digital" width="64" style="border-radius:12px;background:#fff;padding:8px;margin-bottom:24px;" />
-              <h1 style="font-size:24px;font-weight:800;margin:0 0 8px;">You're on the list.</h1>
-              <p style="color:#94a3b8;font-size:15px;line-height:1.6;margin:0 0 24px;">
-                Thanks for signing up. We'll send you one email when WiredUp Digital launches — no spam, no drip sequences.
-              </p>
-              <p style="color:#64748b;font-size:13px;">
-                — The WiredUp Digital team<br/>
-                Sunshine Coast, QLD, Australia
-              </p>
-            </div>
-          `,
+      // Combine both emails into one call: subscriber gets welcome, admin gets notification via bcc
+      const [welcomeRes] = await Promise.all([
+        fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from: 'WiredUp Digital <hello@wiredupdigital.com>',
+            to: normalised,
+            subject: "You're on the list — WiredUp Digital ⚡",
+            html: `
+              <div style="font-family:system-ui,sans-serif;background:#080c14;color:#fff;padding:40px;max-width:520px;margin:0 auto;border-radius:16px;">
+                <img src="https://wiredupdigital.com/wiredup-logo.jpg" alt="WiredUp Digital" width="64" style="border-radius:12px;background:#fff;padding:8px;margin-bottom:24px;" />
+                <h1 style="font-size:24px;font-weight:800;margin:0 0 8px;">You're on the list.</h1>
+                <p style="color:#94a3b8;font-size:15px;line-height:1.6;margin:0 0 24px;">
+                  Thanks for signing up. We'll send you one email when WiredUp Digital launches — no spam, no drip sequences.
+                </p>
+                <p style="color:#64748b;font-size:13px;">
+                  — The WiredUp Digital team<br/>
+                  Sunshine Coast, QLD, Australia
+                </p>
+              </div>
+            `,
+          }),
         }),
-      });
-
-      // Admin notification
-      await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-          from: 'WiredUp Digital <hello@wiredupdigital.com>',
-          to: 'wiredupnotify@gmail.com',
-          subject: `⚡ New subscriber: ${normalised}`,
-          html: `<p style="font-family:system-ui,sans-serif;font-size:15px;"><strong>${normalised}</strong> just signed up on wiredupdigital.com.</p>`,
+        // Admin notification (separate email)
+        fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from: 'WiredUp Digital <hello@wiredupdigital.com>',
+            to: 'wiredupnotify@gmail.com',
+            subject: `⚡ New subscriber: ${normalised}`,
+            html: `<p style="font-family:system-ui,sans-serif;font-size:15px;"><strong>${normalised}</strong> just signed up on wiredupdigital.com.</p>`,
+          }),
         }),
-      });
+      ]);
     }
 
     return json({ success: true }, 200, { 'X-RateLimit-Remaining': String(remaining) });
